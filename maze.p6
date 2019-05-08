@@ -11,9 +11,7 @@ class Grid {
   has @.cells;
   method TWEAK {
     for ^$.rows -> $r {
-      for ^$.cols -> $c {
-        @!cells[$r][$c] = Cell.new;
-      }
+      @!cells[$r] = [ Cell.new xx $.cols ]
     }
   }
 }
