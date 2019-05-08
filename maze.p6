@@ -14,6 +14,9 @@ class Grid {
       @!cells[$r] = [ Cell.new xx $.cols ]
     }
   }
+  method gist {
+    "$.rows x $.cols";
+  }
 }
 
 my $g = Grid.new(:5rows, :5cols);
