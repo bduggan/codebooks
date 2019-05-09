@@ -17,5 +17,22 @@ is ~$grid, q:to/GRID/, 'rendered';
  └───┴───┴───┘
  GRID
 
+$grid[0][0].link($grid[0][1]);
+
+with $grid[0][0] -> $c {
+  ok $c.linked($c.e), 'link 1';
+  nok $c.s.linked($c.s.e), 'link 2';
+}
+
+is ~$grid, q:to/GRID/, 'linked';
+ ┌───────┬───┐
+ │       │   │
+ ├───┬───┼───┤
+ │   │   │   │
+ ├───┼───┼───┤
+ │   │   │   │
+ └───┴───┴───┘
+ GRID
+
 done-testing;
 

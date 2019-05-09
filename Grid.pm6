@@ -77,6 +77,7 @@ class Grid does Positional {
                $c.linked($c.e & $c.s ) && !$c.e.linked($c.e.s) ?? '┌'
             !! $c.linked($c.e & $c.s ) ?? '│'  # should be shorter
             !! $c.linked($c.e) && $c.s.?linked($c.s.?e) ?? '─'
+            !! $c.linked($c.e) && !$c.s.?linked($c.s.?e) ?? '┬'
             !! $c.linked($c.s) && $c.e.?linked($c.e.?s) ?? '│'
             !! $c.linked($c.s) && $c.e ?? '├'
             !! $c.linked($c.s) ?? '│'
