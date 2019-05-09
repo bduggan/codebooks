@@ -65,7 +65,7 @@ class Grid does Positional {
                 !! "├";
       my $bot-new = $bot;
       for @$r -> $c {
-        my $body = ' ' x 3;
+        my $body = ' ' ~ ($c.content // '  ');
         my $east = $c.linked($c.e) ?? " " !! "│";
         $top ~= $body ~ $east;
         my $south = $c.linked($c.s) ?? " " x 3 !! "─" x 3;

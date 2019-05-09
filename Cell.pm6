@@ -2,6 +2,7 @@ class Cell {
   has ($.row, $.col);
   has ($.n, $.s, $.e, $.w ) is rw;
   has Hash $!linked-to;
+  has $.content is rw;
   method link(Cell $other, Bool :$bidi = True) {
     $!linked-to{ $other } = True;
     $other.link(self,:!bidi) if $bidi;
