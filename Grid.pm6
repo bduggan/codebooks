@@ -82,12 +82,12 @@ class Grid does Positional {
             !! $c.linked($c.s) ?? '│'
             !! !$c.linked($c.s) && !$c.linked($c.e) && !$c.e.?linked($c.e.?s) && $c.s.?linked($c.s.?e) ?? '┴'
             !! !$c.linked($c.s) && !$c.linked($c.e) && $c.e.?linked($c.e.?s) && $c.s.?linked($c.s.?e) ?? '┘'
-            !! $c.e         ?? '+'
-            !! $c.s         ?? '+'
+            !! $c.e && $c.linked($c.e) ?? '─'
+            !! $c.e ?? '┴'
             !! '┘' );
       }
       $output ~= $top ~ "\n";
-      $output ~= $bot ~ " new: $bot-new\n";
+      $output ~= $bot-new ~ "\n";
     }
     $output
   }
