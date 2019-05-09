@@ -19,6 +19,10 @@ class Grid {
   has $.rows;
   has $.cols;
   has @.cells;
+  method TWEAK {
+    self.prepare-grid;
+    self.configure-cells;
+  }
   method prepare-grid {
     for ^$.rows -> $row {
       for ^$.cols -> $col {
@@ -34,8 +38,8 @@ class Grid {
       my ($row,$col) = $cell.row, $cell.col;
       $cell.n = self.at( $row - 1, $col );
       $cell.s = self.at( $row + 1, $col );
-      $cell.e = self.at( $row, $col - 1);
-      $cell.w = self.at( $row, $col + 1);
+      $cell.e = self.at( $row, $col + 1);
+      $cell.w = self.at( $row, $col - 1);
     }
   }
   method random-cell {
@@ -50,9 +54,6 @@ class Grid {
       $b($_) for @$r;
     }
   }
-  method TWEAK {
-    self.prepare-grid;
-  }
   method gist {
     "$.rows x $.cols";
   }
@@ -60,13 +61,16 @@ class Grid {
     my $output = "┌" ~ ( ( "─" x 3) xx $.cols ).join("┬") ~ "┐" ~ "\n";
     self.each-row: -> $r {
       my $top = "│";
-      my $bot = "├";
+      my $bot = $r[0].s ?? "├" !! '└';
       for @$r -> $c {
         my $body = ' ' x 3;
         my $east = $c.linked($c.e) ?? " " !! "│";
         $top ~= $body ~ $east;
         my $south = $c.linked($c.s) ?? " " x 3 !! "─" x 3;
-        $bot ~= $south ~ '┼'
+        $bot ~= $south ~ ( $c.e && $c.s ?? '┼'
+                        !! $c.e         ?? '┴'
+                        !! $c.s         ?? '┤'
+                        !! '┘' );
       }
       $output ~= $top ~ "\n";
       $output ~= $bot ~ "\n";
