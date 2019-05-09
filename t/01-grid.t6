@@ -1,0 +1,11 @@
+#!perl6
+
+use Test;
+use Grid;
+
+my $grid = Grid.new(:3rows, :3cols);
+
+ok $grid, 'made a grid';
+
+done-testing;
+
