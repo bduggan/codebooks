@@ -1,3 +1,5 @@
+#!/usr/bin/env perl6
+
 class Cell {
   has ($.row, $.col);
   has ($.n, $.s, $.e, $.w ) is rw;
