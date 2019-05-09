@@ -11,7 +11,8 @@ class Cell {
     $other.unlink(:!bidi);
   }
   method links { $!.links.keys }
-  method linked(Cell $x) { $!.links{$x}:exists }
+  multi method linked(Cell:D $x) { $!.links{$x}:exists }
+  multi method linked($x) { }
   method neighbors { ($.n, $.s, $.e, $.w).grep: *.defined }
 }
 class Grid {
@@ -55,8 +56,25 @@ class Grid {
   method gist {
     "$.rows x $.cols";
   }
+  method Str {
+    my $output = "+" ~ ( "---+" x $.cols ) ~ "\n";
+    self.each-row: -> $r {
+      my $top = "|";
+      my $bot = "+";
+      for @$r -> $c {
+        my $body = ' ' x 3;
+        my $east = $c.linked($c.e) ?? " " !! "|";
+        $top ~= $body ~ $east;
+        my $south = $c.linked($c.s) ?? " " x 3 !! "---";
+        $bot ~= $south ~ '+'
+      }
+      $output ~= $top ~ "\n";
+      $output ~= $bot ~ "\n";
+    }
+    $output
+  }
 }
 
 my $g = Grid.new(:5rows, :5cols);
 
-say $g;
+put $g;
