@@ -1,5 +1,9 @@
 use Cell;
 
+my $SEGMENT = "─";
+my $LINE = $SEGMENT x 3;
+my $DH = "┬"; # "\c[BOX DRAWINGS LIGHT DOWN AND HORIZONTAL]";
+
 class Grid does Positional {
   has $.rows;
   has $.cols;
@@ -39,11 +43,27 @@ class Grid does Positional {
   method gist {
     "$.rows x $.cols";
   }
+  method row($n) {
+    self[$n]<>;
+  }
   method Str {
-    my $output = "┌" ~ ( ( "─" x 3) xx $.cols ).join("┬") ~ "┐" ~ "\n";
+    my $top-row = "┌";
+    for self.row(0).rotor(2 => -1) -> ($this,$next) {
+      $top-row ~= $LINE;
+      if ($this.linked($next)) {
+        $top-row ~= $SEGMENT;
+      } else {
+        $top-row ~= "┬";
+      }
+    }
+    $top-row ~= $LINE ~ "┐";
+    my $output = $top-row ~ "\n";
     self.each-row: -> $r {
       my $top = "│";
-      my $bot = $r[0].s ?? "├" !! '└';
+      my $bot = !$r[0].s ?? '└'
+                !! $r[0].linked($r[1]) ?? "│"
+                !! "├";
+      my $bot-new = "│";
       for @$r -> $c {
         my $body = ' ' x 3;
         my $east = $c.linked($c.e) ?? " " !! "│";
@@ -55,7 +75,7 @@ class Grid does Positional {
                         !! '┘' );
       }
       $output ~= $top ~ "\n";
-      $output ~= $bot ~ "\n";
+      $output ~= $bot ~ " new: $bot-new\n";
     }
     $output
   }
