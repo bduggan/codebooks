@@ -1,9 +1,9 @@
 use Cell;
 
-class Grid {
+class Grid does Positional {
   has $.rows;
   has $.cols;
-  has @.cells;
+  has @.cells handles <AT-POS>;
   method TWEAK {
     self.prepare-grid;
     self.configure-cells;
@@ -15,20 +15,17 @@ class Grid {
       }
     }
   }
-  method at($r, $c) {
-    @!cells[$r][$c];
-  }
   method configure-cells {
     self.each-cell: -> $cell {
       my ($row,$col) = $cell.row, $cell.col;
-      $cell.n = self.at( $row - 1, $col );
-      $cell.s = self.at( $row + 1, $col );
-      $cell.e = self.at( $row, $col + 1);
-      $cell.w = self.at( $row, $col - 1);
+      $cell.n = self[ $row - 1 ][ $col ];
+      $cell.s = self[ $row + 1 ][ $col ];
+      $cell.e = self[ $row     ][ $col + 1 ];
+      $cell.w = self[ $row     ][ $col - 1 ];
     }
   }
   method random-cell {
-    self.at( (^$.rows).pick, (^$.cols).pick );
+    self[ (^$.rows).pick ][ (^$.cols).pick ];
   }
   method size { $.rows * $.cols }
   method each-row(Block $b) {
@@ -63,5 +60,4 @@ class Grid {
     $output
   }
 }
-
 

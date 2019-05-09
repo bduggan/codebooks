@@ -10,7 +10,7 @@ class Cell {
     $!linked-to{ $other } = False;
     $other.unlink(self,:!bidi) if $bidi;
   }
-  method links { say "in links"; $!linked-to.keys }
+  method links { $!linked-to.keys }
   multi method linked(Cell:D $x) { $!linked-to{$x}:exists }
   multi method linked(Any $x) { False }
   method neighbors { ($.n, $.s, $.e, $.w).grep: *.defined }
