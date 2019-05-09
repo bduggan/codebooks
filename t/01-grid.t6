@@ -7,5 +7,7 @@ my $grid = Grid.new(:3rows, :3cols);
 
 ok $grid, 'made a grid';
 
+diag $grid;
+
 done-testing;
 

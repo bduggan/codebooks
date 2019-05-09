@@ -74,7 +74,7 @@ class Grid does Positional {
                         !! $c.s         ?? '┤'
                         !! '┘' );
         $bot-new ~= $south ~ (
-               $c.linked($c.e & $c.s ) && !$c.e.linked($c.e.s) ?? '┌' # ┼'
+               $c.linked($c.e & $c.s ) && !$c.e.linked($c.e.s) ?? '┌'
             !! $c.linked($c.e & $c.s ) ?? '│'  # should be shorter
             !! $c.linked($c.e) && $c.s.?linked($c.s.?e) ?? '─'
             !! $c.linked($c.s) && $c.e.?linked($c.e.?s) ?? '│'
@@ -83,7 +83,9 @@ class Grid does Positional {
             !! !$c.linked($c.s) && !$c.linked($c.e) && !$c.e.?linked($c.e.?s) && $c.s.?linked($c.s.?e) ?? '┴'
             !! !$c.linked($c.s) && !$c.linked($c.e) && $c.e.?linked($c.e.?s) && $c.s.?linked($c.s.?e) ?? '┘'
             !! $c.e && $c.linked($c.e) ?? '─'
+            !! $c.e && $c.s ?? '┼'
             !! $c.e ?? '┴'
+            !! $c.s ?? '┤'
             !! '┘' );
       }
       $output ~= $top ~ "\n";
