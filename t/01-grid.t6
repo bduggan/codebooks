@@ -34,5 +34,17 @@ is ~$grid, q:to/GRID/, 'linked';
  └───┴───┴───┘
  GRID
 
+$grid[0][0].link($grid[1][0]);
+
+is ~$grid, q:to/GRID/, 'linked again';
+ ┌───────┬───┐
+ │       │   │
+ │   ┌───┼───┤
+ │   │   │   │
+ ├───┼───┼───┤
+ │   │   │   │
+ └───┴───┴───┘
+ GRID
+
 done-testing;
 
