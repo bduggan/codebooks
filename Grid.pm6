@@ -58,18 +58,22 @@ class Grid does Positional {
     }
     $top-row ~= $LINE ~ "┐";
     my $output = $top-row ~ "\n";
-    self.each-row: -> $r {
+    for self.cells.rotor(2 => -1, :partial) -> ($r,$s = Nil) {
       my $top = "│";
       my $bot = !$r[0].s ?? '└'
-                !! $r[0].linked($r[1]) ?? "│"
+                !! $r[0].linked($s[0]) ?? "│"
                 !! "├";
-      my $bot-new = "│";
+      my $bot-new = $bot;
       for @$r -> $c {
         my $body = ' ' x 3;
         my $east = $c.linked($c.e) ?? " " !! "│";
         $top ~= $body ~ $east;
         my $south = $c.linked($c.s) ?? " " x 3 !! "─" x 3;
         $bot ~= $south ~ ( $c.e && $c.s ?? '┼'
+                        !! $c.e         ?? '┴'
+                        !! $c.s         ?? '┤'
+                        !! '┘' );
+        $bot-new ~= $south ~ ( $c.e && $c.s ?? '┼'
                         !! $c.e         ?? '┴'
                         !! $c.s         ?? '┤'
                         !! '┘' );
