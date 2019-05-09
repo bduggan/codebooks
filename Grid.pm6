@@ -75,7 +75,8 @@ class Grid does Positional {
                         !! '┘' );
         $bot-new ~= $south ~ (
                $c.linked($c.e & $c.s ) && !$c.e.linked($c.e.s) ?? '┌' # ┼'
-            !! $c.linked($c.e) && !$c.linked($c.s) ?? '+'
+            !! $c.linked($c.e & $c.s ) ?? '│'  # should be shorter
+            !! $c.linked($c.e) && $c.s.?linked($c.s.?e) ?? '─'
             !! $c.e         ?? '+'
             !! $c.s         ?? '+'
             !! '┘' );
