@@ -57,16 +57,16 @@ class Grid {
     "$.rows x $.cols";
   }
   method Str {
-    my $output = "+" ~ ( "---+" x $.cols ) ~ "\n";
+    my $output = "┌" ~ ( ( "─" x 3) xx $.cols ).join("┬") ~ "┐" ~ "\n";
     self.each-row: -> $r {
-      my $top = "|";
-      my $bot = "+";
+      my $top = "│";
+      my $bot = "├";
       for @$r -> $c {
         my $body = ' ' x 3;
-        my $east = $c.linked($c.e) ?? " " !! "|";
+        my $east = $c.linked($c.e) ?? " " !! "│";
         $top ~= $body ~ $east;
-        my $south = $c.linked($c.s) ?? " " x 3 !! "---";
-        $bot ~= $south ~ '+'
+        my $south = $c.linked($c.s) ?? " " x 3 !! "─" x 3;
+        $bot ~= $south ~ '┼'
       }
       $output ~= $top ~ "\n";
       $output ~= $bot ~ "\n";
