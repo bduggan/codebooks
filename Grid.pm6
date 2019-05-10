@@ -2,7 +2,6 @@ use Cell;
 
 my $SEGMENT = "─";
 my $LINE = $SEGMENT x 3;
-my $DH = "┬"; # "\c[BOX DRAWINGS LIGHT DOWN AND HORIZONTAL]";
 
 sub determine-lower-right-corner($e,$s,$es,$se) is export {
   my $dir = ('UP' x $e) ~ ('DOWN' x $se);
