@@ -7,7 +7,6 @@ class Draw {
     s/LEFTRIGHT/HORIZONTAL/ with $lr;
     my $str = "BOX DRAWINGS LIGHT ";
     $str ~= ($dir,$lr).grep({.defined && .chars}).join(" AND ");
-    #return $str;
     uniparse($str);
   }
 
