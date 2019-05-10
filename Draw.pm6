@@ -26,5 +26,11 @@ class Draw {
   method line {
     Draw.dash x 3;
   }
+  method top-corner-piece {
+    "┐";
+  }
+  method top-piece {
+    "┬";
+  }
 
 }
