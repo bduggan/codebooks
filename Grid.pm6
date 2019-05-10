@@ -56,20 +56,14 @@ class Grid does Positional {
     $top-row ~= Draw.line ~ "┐";
     my $output = $top-row ~ "\n";
     for self.cells -> $r {
-      my $top = "│";
-      my $bot = !$r[0].s ?? '└'
-                !! $r[0].linked($r[0].s) ?? "│"
-                !! "├";
-      my $bot-new = $bot;
+      my $top = Draw.vert;
+      my $bot = Draw.bottom-left($r[0].s, $r[0].linked($r[0].s));
+
       for @$r -> $c {
         my $body = ' ' ~ ($c.content // '  ');
         my $east = $c.linked($c.e) ?? " " !! "│";
         $top ~= $body ~ $east;
         my $south = $c.linked($c.s) ?? " " x 3 !! "─" x 3;
-        $bot ~= $south ~ ( $c.e && $c.s ?? '┼'
-                        !! $c.e         ?? '┴'
-                        !! $c.s         ?? '┤'
-                        !! '┘' );
         my $corner = Draw.lower-right(
             (not $c.linked($c.e)),
             (not $c.linked($c.s)),
@@ -77,10 +71,10 @@ class Grid does Positional {
             ((not $c.s) ?? False !! not $c.s.?linked($c.?s.?e))
         );
 
-        $bot-new ~= $south ~ $corner;
+        $bot ~= $south ~ $corner;
       }
       $output ~= $top ~ "\n";
-      $output ~= $bot-new ~ "\n";
+      $output ~= $bot ~ "\n";
     }
     $output
   }

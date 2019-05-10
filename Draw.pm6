@@ -11,8 +11,17 @@ class Draw {
     uniparse($str);
   }
 
+  method bottom-left($can-go-south,$linked-to-south) {
+    return '└' unless $can-go-south;
+    return "│" if $linked-to-south;
+    "├";
+  }
+
   method dash {
     return uniparse("BOX DRAWINGS LIGHT HORIZONTAL");
+  }
+  method vert {
+    return uniparse("BOX DRAWINGS LIGHT VERTICAL");
   }
   method line {
     Draw.dash x 3;
