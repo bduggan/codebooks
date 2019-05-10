@@ -1,18 +1,5 @@
 use Cell;
-
-my $SEGMENT = "─";
-my $LINE = $SEGMENT x 3;
-
-sub determine-lower-right-corner($e,$s,$es,$se) is export {
-  my $dir = ('UP' x $e) ~ ('DOWN' x $se);
-  s/UPDOWN/VERTICAL/ with $dir;
-  my $lr = ('LEFT' x $s) ~ ('RIGHT' x $es);
-  s/LEFTRIGHT/HORIZONTAL/ with $lr;
-  my $str = "BOX DRAWINGS LIGHT ";
-  $str ~= ($dir,$lr).grep({.defined && .chars}).join(" AND ");
-  #return $str;
-  uniparse($str);
-}
+use Draw;
 
 class Grid does Positional {
   has $.rows;
@@ -59,14 +46,14 @@ class Grid does Positional {
   method Str {
     my $top-row = "┌";
     for self.row(0).rotor(2 => -1) -> ($this,$next) {
-      $top-row ~= $LINE;
+      $top-row ~= Draw.line;
       if ($this.linked($next)) {
-        $top-row ~= $SEGMENT;
+        $top-row ~= Draw.dash;
       } else {
         $top-row ~= "┬";
       }
     }
-    $top-row ~= $LINE ~ "┐";
+    $top-row ~= Draw.line ~ "┐";
     my $output = $top-row ~ "\n";
     for self.cells -> $r {
       my $top = "│";
@@ -83,11 +70,11 @@ class Grid does Positional {
                         !! $c.e         ?? '┴'
                         !! $c.s         ?? '┤'
                         !! '┘' );
-        my $corner = determine-lower-right-corner(
-            (not so $c.linked($c.e)),
-            (not so $c.linked($c.s)),
-            ((not $c.e) ?? False !! not so $c.e.?linked($c.?e.?s)),
-            ((not $c.s) ?? False !! not so $c.s.?linked($c.?s.?e))
+        my $corner = Draw.lower-right(
+            (not $c.linked($c.e)),
+            (not $c.linked($c.s)),
+            ((not $c.e) ?? False !! not $c.e.?linked($c.?e.?s)),
+            ((not $c.s) ?? False !! not $c.s.?linked($c.?s.?e))
         );
 
         $bot-new ~= $south ~ $corner;
