@@ -4,6 +4,17 @@ my $SEGMENT = "─";
 my $LINE = $SEGMENT x 3;
 my $DH = "┬"; # "\c[BOX DRAWINGS LIGHT DOWN AND HORIZONTAL]";
 
+sub determine-lower-right-corner($e,$s,$es,$se) is export {
+  my $dir = ('UP' x $e) ~ ('DOWN' x $se);
+  s/UPDOWN/VERTICAL/ with $dir;
+  my $lr = ('LEFT' x $s) ~ ('RIGHT' x $es);
+  s/LEFTRIGHT/HORIZONTAL/ with $lr;
+  my $str = "BOX DRAWINGS LIGHT ";
+  $str ~= ($dir,$lr).grep({.defined && .chars}).join(" AND ");
+  #return $str;
+  uniparse($str);
+}
+
 class Grid does Positional {
   has $.rows;
   has $.cols;
@@ -73,21 +84,14 @@ class Grid does Positional {
                         !! $c.e         ?? '┴'
                         !! $c.s         ?? '┤'
                         !! '┘' );
-        $bot-new ~= $south ~ (
-               $c.linked($c.e & $c.s ) && !$c.e.linked($c.e.s) ?? '┌'
-            !! $c.linked($c.e & $c.s ) ?? '│'  # should be shorter
-            !! $c.linked($c.e) && $c.s.?linked($c.s.?e) ?? '─'
-            !! $c.linked($c.e) && !$c.s.?linked($c.s.?e) ?? '┬'
-            !! $c.linked($c.s) && $c.e.?linked($c.e.?s) ?? '│'
-            !! $c.linked($c.s) && $c.e ?? '├'
-            !! $c.linked($c.s) ?? '│'
-            !! !$c.linked($c.s) && !$c.linked($c.e) && !$c.e.?linked($c.e.?s) && $c.s.?linked($c.s.?e) ?? '┴'
-            !! !$c.linked($c.s) && !$c.linked($c.e) && $c.e.?linked($c.e.?s) && $c.s.?linked($c.s.?e) ?? '┘'
-            !! $c.e && $c.linked($c.e) ?? '─'
-            !! $c.e && $c.s ?? '┼'
-            !! $c.e ?? '┴'
-            !! $c.s ?? '┤'
-            !! '┘' );
+        my $corner = determine-lower-right-corner(
+            (not so $c.linked($c.e)),
+            (not so $c.linked($c.s)),
+            ((not $c.e) ?? False !! not so $c.e.?linked($c.?e.?s)),
+            ((not $c.s) ?? False !! not so $c.s.?linked($c.?s.?e))
+        );
+
+        $bot-new ~= $south ~ $corner;
       }
       $output ~= $top ~ "\n";
       $output ~= $bot-new ~ "\n";

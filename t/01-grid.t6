@@ -48,7 +48,22 @@ is ~$grid, q:to/GRID/, 'linked again';
 
 $grid[0][2].link($grid[1][2]);
 
-put $grid;
+with $grid[0][1] -> $c {
+  ok $c.e, 'east';
+  nok not so $c.e.?linked($c.?e.?s), 'linked';
+  ok (not so $c.linked($c.e)), 'linked';
+  ok (not so $c.linked($c.s)), 'linked';
+}
+
+is ~$grid, q:to/GRID/, 'nother link';
+┌───────┬───┐
+│       │   │
+│   ┌───┤   │
+│   │   │   │
+├───┼───┼───┤
+│   │   │   │
+└───┴───┴───┘
+GRID
 
 done-testing;
 
