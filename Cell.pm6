@@ -8,10 +8,10 @@ class Cell {
 
   has Int $.distance is rw;
 
-  method render {
+  method render(Bool :$show-distances) {
      return ' 🐁' if $.is-start;
      return ' 🧀' if $.is-end;
-     return ' ' ~ $.distance.fmt('%2d') if $.distance;
+     return ' ' ~ $.distance.fmt('%2d') if $show-distances && $.distance;
      return ' ' x 3 unless $.content;
      return $.content;
   }

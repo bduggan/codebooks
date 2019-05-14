@@ -7,6 +7,7 @@ class Grid does Positional {
   has $.cols;
   has @.cells handles <AT-POS>;
   has ( $.start; $.end );
+  has Bool $.show-distances;
 
   also does Solver;
 
@@ -65,7 +66,7 @@ class Grid does Positional {
       my $bot = Draw.bottom-left($r[0].s, $r[0].linked($r[0].s));
 
       for @$r -> $c {
-        my $body = $c.render;
+        my $body = $c.render(:$!show-distances);
         my $east = $c.linked($c.e) ?? " " !! Draw.vert;
         $top ~= $body ~ $east;
         my $south = $c.linked($c.s) ?? " " x 3 !! Draw.line;
