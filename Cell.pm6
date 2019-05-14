@@ -13,7 +13,8 @@ class Cell {
      return ' 🧀' if $.is-end;
      return ' ' ~ $.distance.fmt('%2d') if $show-distances && $.distance;
      return ' ' x 3 unless $.content;
-     return $.content;
+     return $.content.fmt(' %2s') if $.content.chars == 1;
+     return $.content.fmt('%3s');
   }
 
   method link(Cell $other, Bool :$bidi = True) {
@@ -28,4 +29,7 @@ class Cell {
   multi method linked(Cell:D $x) { %!linked-to{$x}:exists }
   multi method linked(Any $x) { False }
   method neighbors { ($.n, $.s, $.e, $.w).grep: *.defined }
+  method Str {
+    "cell (row $.row, col $.col) (={$.distance // '?'})"
+  }
 }

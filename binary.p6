@@ -11,7 +11,7 @@ unit sub MAIN(
   Bool :x(:$show-distances)
 );
 
-my $level = WARNING;
+my $level = INFO;
 $level = DEBUG if $debug;
 logger.send-to($*ERR, :$level);
 
@@ -28,4 +28,5 @@ $g.choose-start-and-end;
 
 $g.analyze;
 
+$g.solve;
 put $g;

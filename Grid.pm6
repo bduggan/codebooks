@@ -1,6 +1,7 @@
 use Cell;
 use Draw;
 use Analyzer;
+use Solver;
 
 class Grid does Positional {
   has $.rows;
@@ -10,6 +11,7 @@ class Grid does Positional {
   has Bool $.show-distances;
 
   also does Analyzer;
+  also does Solver;
 
   method TWEAK {
     self.prepare-grid;
