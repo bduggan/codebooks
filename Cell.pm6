@@ -13,7 +13,7 @@ class Cell {
      return ' 🧀' if $.is-end;
      return ' ' ~ $.distance.fmt('%2d') if $show-distances && $.distance;
      return ' ' x 3 unless $.content;
-     return $.content.fmt(' %2s') if $.content.chars == 1;
+     return $.content.fmt(' %-2s') if $.content.chars == 1;
      return $.content.fmt('%3s');
   }
 
