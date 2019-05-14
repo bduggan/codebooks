@@ -26,6 +26,6 @@ $g.each-cell: -> $c {
 
 $g.choose-start-and-end;
 
-$g.solve;
+$g.analyze;
 
 put $g;

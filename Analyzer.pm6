@@ -1,9 +1,9 @@
 use Log::Async;
 
-unit role Solver;
+unit role Analyzer;
 use Cell;
 
-method solve {
+method analyze {
   my @frontier = ($.start);
   my $distance = 0;
   while @frontier.elems {
