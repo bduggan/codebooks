@@ -1,5 +1,9 @@
 #!/usr/bin/env perl6
 
+use Log::Async;
+
+logger.send-to($*ERR, :level<WARNING>);
+
 use lib '.';
 use Cell;
 use Grid;
@@ -13,6 +17,8 @@ $g.each-cell: -> $c {
   die "failed to link" if $link && not $c.linked($link);
 }
 
-$g.random-cell.content = '🧀';
-$g.random-cell.content = '🐁';
+$g.choose-start-and-end;
+
+$g.solve;
+
 put $g;

@@ -1,10 +1,15 @@
 use Cell;
 use Draw;
+use Solver;
 
 class Grid does Positional {
   has $.rows;
   has $.cols;
   has @.cells handles <AT-POS>;
+  has ( $.start; $.end );
+
+  also does Solver;
+
   method TWEAK {
     self.prepare-grid;
     self.configure-cells;
@@ -60,7 +65,7 @@ class Grid does Positional {
       my $bot = Draw.bottom-left($r[0].s, $r[0].linked($r[0].s));
 
       for @$r -> $c {
-        my $body = ' ' ~ ($c.content // '  ');
+        my $body = $c.render;
         my $east = $c.linked($c.e) ?? " " !! Draw.vert;
         $top ~= $body ~ $east;
         my $south = $c.linked($c.s) ?? " " x 3 !! Draw.line;
@@ -78,5 +83,12 @@ class Grid does Positional {
     }
     $output
   }
+
+  method choose-start-and-end {
+    ($!start,$!end) = self.random-cell xx 2;
+    with $!start { .is-start = True; }
+    with $!end { .is-end = True; }
+  }
+
 }
 
