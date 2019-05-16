@@ -1,0 +1,28 @@
+newpath
+
+/pathie {
+  /r exch def
+  /g exch def
+  /b exch def
+  /x exch def
+  /y exch def
+  /a1 exch def
+  /a2 exch def
+  /b1 exch def
+  /b2 exch def
+  /c1 exch def
+  /c2 exch def
+
+  x y moveto
+  a1 a2 b1 b2 c1 c2 curveto
+  10 setlinewidth
+  0 setgray
+  stroke
+
+  x y moveto
+  a1 a2 b1 b2 c1 c2 curveto
+  8 setlinewidth
+  % 1 setgray
+  r g b setrgbcolor
+  stroke
+} def
