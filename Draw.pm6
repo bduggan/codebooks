@@ -7,7 +7,10 @@ class Draw {
     s/LEFTRIGHT/HORIZONTAL/ with $lr;
     my $str = "BOX DRAWINGS LIGHT ";
     $str ~= ($dir,$lr).grep({.defined && .chars}).join(" AND ");
-    uniparse($str);
+    my $ret = uniparse($str);
+    return '│' if $ret eq '╷';
+    return '─' if $ret eq '╴';
+    $ret;
   }
 
   method bottom-left($can-go-south,$linked-to-south) {
